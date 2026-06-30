@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# 虚拟环境
+venv/
+.venv/
+
+# 文档缓存
+*.bin
+*.sqlite3
+chroma_db/
+
+# 日志
+logs/
+*.log
+
+# 学习资料原始文件（非代码）
+*.pptx
+*.pdf
+
+# 外部数据（原始资料不提交）
+data/external/
+
+# 配置文件含敏感信息
+config/tools.yaml
+config/rag.yaml
+*.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 临时文件
+extracted_text.txt

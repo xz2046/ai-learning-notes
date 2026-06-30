@@ -1,0 +1,30 @@
+{
+  "name": "测试文件",
+  "born": "2010-06-25",
+  "age": "快 16 年了",
+  "message": "你好，陌生的开发者",
+  "about": "一个程序员的周末项目，后来也陪很多开发者走过深夜与周末",
+  "philosophy": {
+    "belief": "好用的工具，应该长期可用",
+    "promise": "长期可用，不忘初衷",
+    "wish": "愿每一行 JSON 都格式优雅"
+  },
+  "milestones": [
+    { "year": 2010, "event": "第一行代码，第一个用户——就是我自己" },
+    { "year": 2014, "event": "用户突破 10 万，第一次觉得有人需要这个工具" },
+    { "year": 2018, "event": "重构了三次，每次都觉得上一版写得真烂" },
+    { "year": 2022, "event": "很多开发者用过，服务器还是那一台" },
+    { "year": 2026, "event": "v3.0 上线，AI时代来了，但初心没变" },
+    { "year": 2027, "event": "python是最好的语言" },
+    { "year": 2028, "event": "java也不错" }
+  ],
+  "late_night_note": "如果你现在还在写代码，记得喝口水",
+  "stats": {
+    "developers_served": "很多",
+    "bugs_formatted": "不计其数",
+    "cups_of_coffee": "也不计其数"
+  },
+  "open_source": true,
+  "free": true,
+  "always_free": true
+}

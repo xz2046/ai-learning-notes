@@ -1,0 +1,182 @@
+{
+  "摘要 - 基础版": [
+    {
+      "case_id": "summary_a__summary_01",
+      "success": true,
+      "content": "订单服务在处理订单#12345时因连接数据库超时而失败，并触发了一次重试。此时连接池已耗尽，活跃连接达到上限，请求开始排队。同时，下游支付服务出现故障，导致熔断器被打开。",
+      "elapsed": 4.05,
+      "error": null
+    },
+    {
+      "case_id": "summary_a__summary_02",
+      "success": true,
+      "content": "一次定期健康检查已完成，所有12项服务均处于正常状态。平均响应时间为45毫秒，未发现任何异常。",
+      "elapsed": 2.25,
+      "error": null
+    },
+    {
+      "case_id": "summary_a__summary_03",
+      "success": true,
+      "content": "服务器发生了问题。\n该问题大约从昨晚开始出现。\n截至目前，故障仍未解决。",
+      "elapsed": 7.41,
+      "error": null
+    },
+    {
+      "case_id": "summary_a__summary_04",
+      "success": true,
+      "content": "天气晴朗适合散步。服务器变慢，不确定是否网络原因。数据库端暂无问题反馈。",
+      "elapsed": 2.67,
+      "error": null
+    }
+  ],
+  "摘要 - 增强版（few-shot + 结构化输出）": [
+    {
+      "case_id": "summary_b__summary_01",
+      "success": true,
+      "content": "{\n  \"summary\": \"订单服务因数据库连接超时触发断路器\",\n  \"key_points\": [\n    \"数据库连接超时30秒\",\n    \"连接池耗尽，活跃45/最大50\",\n    \"payment-service断路器打开\"\n  ],\n  \"level\": \"error\"\n}",
+      "elapsed": 3.2,
+      "error": null
+    },
+    {
+      "case_id": "summary_b__summary_02",
+      "success": true,
+      "content": "{\n  \"summary\": \"计划健康检查完成，12个服务均健康，平均响应时间45ms，无异常\",\n  \"key_points\": [\n    \"所有12个服务健康\",\n    \"平均响应时间45ms\",\n    \"未检测到异常\"\n  ],\n  \"level\": \"info\"\n}",
+      "elapsed": 8.83,
+      "error": null
+    },
+    {
+      "case_id": "summary_b__summary_03",
+      "success": true,
+      "content": "{\n  \"summary\": \"服务器自昨晚起出现故障，至今未恢复\",\n  \"key_points\": [\n    \"服务器出现问题\",\n    \"昨晚开始\",\n    \"现在尚未恢复\"\n  ],\n  \"level\": \"warn\"\n}",
+      "elapsed": 4.74,
+      "error": null
+    },
+    {
+      "case_id": "summary_b__summary_04",
+      "success": true,
+      "content": "{'summary': '服务器出现缓慢现象，疑为网络问题，数据库正常', 'key_points': ['服务器有点慢', '不确定是否为网络问题', '数据库无问题反馈'], 'level': 'warn'}",
+      "elapsed": 4.31,
+      "error": null
+    }
+  ],
+  "分类 - 基础版": [
+    {
+      "case_id": "classify_a__classify_01",
+      "success": true,
+      "content": "服务器问题",
+      "elapsed": 6.47,
+      "error": null
+    },
+    {
+      "case_id": "classify_a__classify_02",
+      "success": true,
+      "content": "数据库问题",
+      "elapsed": 1.82,
+      "error": null
+    },
+    {
+      "case_id": "classify_a__classify_03",
+      "success": true,
+      "content": "应用问题",
+      "elapsed": 4.48,
+      "error": null
+    },
+    {
+      "case_id": "classify_a__classify_04",
+      "success": true,
+      "content": "其他",
+      "elapsed": 1.76,
+      "error": null
+    }
+  ],
+  "分类 - 增强版（few-shot + 边界说明）": [
+    {
+      "case_id": "classify_b__classify_01",
+      "success": true,
+      "content": "网络问题",
+      "elapsed": 2.0,
+      "error": null
+    },
+    {
+      "case_id": "classify_b__classify_02",
+      "success": true,
+      "content": "数据库问题",
+      "elapsed": 2.05,
+      "error": null
+    },
+    {
+      "case_id": "classify_b__classify_03",
+      "success": true,
+      "content": "服务器问题",
+      "elapsed": 2.9,
+      "error": null
+    },
+    {
+      "case_id": "classify_b__classify_04",
+      "success": true,
+      "content": "其他",
+      "elapsed": 1.6,
+      "error": null
+    }
+  ],
+  "运维问答 - 基础版": [
+    {
+      "case_id": "ops_qa_a__ops_qa_01",
+      "success": true,
+      "content": "Nginx 出现 502 表明它作为代理时，从上游服务器（如 PHP-FPM、后端应用）收到无效响应。常见排查步骤：\n\n**1. 查看错误日志**\n```bash\ntail -f /var/log/nginx/error.log\n```\n通常会有详细原因，如 `connect() failed (111: Connection refused)` 或上游超时。\n\n**2. 确认上游服务是否正常**\n- 检查后端进程是否在运行：`systemctl status php-fpm` 或 `ps aux | grep app`\n- 测试本地端口是否监听：`ss -tlnp | grep <backend_port>`\n\n**3. 检查后端负载与超时**\n- 如果后端响应过慢，调整 Nginx 超时：\n  ```nginx\n  proxy_read_timeout 60s;\n  proxy_connect_timeout 60s;\n  ```\n- 若为 FastCGI，设置 `fastcgi_read_timeout 300s;`\n\n**4. 检查资源限制**\n- 后端可能因内存不足、文件句柄耗尽或请求队列满而拒绝连接，查看系统日志 `dmesg` 或 `journalctl -u php-fpm`\n\n**5. 网络与防火墙**\n- 确保 Nginx 与后端间无防火墙拦截（如 `127.0.0.1:9000` 被 iptables 阻断）\n\n**6. 连接被主动关闭**\n- 查看后端是否有异常退出，检查 `php-fpm` 的 `pm.max_requests` 设置，若进程异常退出会引发 502\n\n**7. 配置检查**\n- `proxy_pass` 或 `fastcgi_pass` 地址是否正确，例如 `127.0.0.1:9000` 是否可用\n- 确认 Nginx 能解析上游主机\n\n按顺序排查，大部分 502 都源于后端服务不可用或响应超时。",
+      "elapsed": 9.79,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_a__ops_qa_02",
+      "success": true,
+      "content": "先确认哪个分区满了：\n```bash\ndf -h\n```\n定位大文件或大目录：\n```bash\ndu -sh /* 2>/dev/null | sort -hr | head -20\n# 或针对特定分区\ndu -h /path | sort -hr | head -20\n```\n清理候选：\n- 系统日志：`journalctl --vacuum-size=200M`、`find /var/log -type f -name \"*.log\" -mtime +30 -delete`\n- 临时文件：`/tmp`、`/var/tmp`（注意重启后清除）\n- 包缓存：`apt clean` / `yum clean all`\n- Docker：`docker system prune -a`\n- 内核：自动清理旧内核（`purge-old-kernels`，Ubuntu）或手动检查 `/boot`\n\n如果删除文件后空间未释放，可能是被进程占用，用 `lsof | grep deleted` 找到进程并重启。必要时扩容磁盘或迁移数据。",
+      "elapsed": 6.51,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_a__ops_qa_03",
+      "success": true,
+      "content": "这段日志表示 `OrderService.getOrder()` 方法第142行发生了**空指针异常**（NullPointerException）。  \n根本原因是代码尝试访问或调用一个 `null` 对象的成员（方法/属性），常见于未初始化对象、查询返回空结果却未判空等情况。  \n建议检查该行的变量是否为 `null`，补充空值判断或追溯数据来源。",
+      "elapsed": 4.49,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_a__ops_qa_04",
+      "success": true,
+      "content": "先排查资源瓶颈。请依次执行以下命令，看哪个指标异常：\n\n```bash\ntop -bn1 | head -20          # 看CPU/内存占用高的进程\nfree -h                      # 内存和swap使用情况\niostat -x 1 3               # 磁盘I/O等待和利用率\nsar -n DEV 1 3 2>/dev/null | grep -E \"eth0|ens\"  # 网络流量（替换为实际网卡）\ndmesg | tail -30            # 内核报错，如OOM、I/O错误\n```\n\n同时检查系统负载：\n```bash\nuptime                       # 看1/5/15分钟平均负载\n```\n\n常见卡顿原因：\n- **CPU满载**：`%Cpu(s)` 中 `us`或`sy` 持续>90%，找高CPU进程\n- **内存不足触发OOM/swap**：`available` 很低且 `swap used` 高，进程频繁被kill或换页\n- **磁盘I/O瓶颈**：`iowait` 高、磁盘 `util%` 接近100%，通常由大量读写或磁盘故障引起\n- **网络打满**：网卡流量接近带宽上限，或存在大量丢包/重传\n\n把上面命令的输出发来，我帮你定位具体进程和原因。",
+      "elapsed": 9.14,
+      "error": null
+    }
+  ],
+  "运维问答 - 增强版（结构化模板）": [
+    {
+      "case_id": "ops_qa_b__ops_qa_01",
+      "success": true,
+      "content": "### 问题判断\nNginx 作为反向代理时，向上游服务转发请求后收到无效响应导致 502 错误。\n\n### 可能原因\n- 上游服务进程崩溃、未启动或无法处理请求（如应用死循环、内存耗尽）\n- 上游服务未监听在 Nginx 配置的地址和端口，或使用了错误的协议（HTTP vs TCP）\n- 上游服务响应超时，或返回了不符合 HTTP 规范的响应（如连接提前关闭）\n- 网络层问题：防火墙/安全组阻断、DNS 解析失败、容器网络异常\n- Nginx 配置错误，如 proxy_pass 指向错误的上游地址或错误使用 SSL 而没有对应配置\n\n### 建议排查步骤\n1. 确认上游服务状态：直接访问上游服务的接口（绕过 Nginx），检查是否能正常响应；查看上游应用日志和系统资源（CPU/内存）。\n2. 检查 Nginx 错误日志（通常位于 /var/log/nginx/error.log），观察 502 发生时的具体错误信息，如 “connect() failed”、“upstream timed out”、“recv() failed”、“SSL handshake failed” 等，锁定问题方向。\n3. 核对 Nginx 配置中 proxy_pass 的地址、端口、协议是否正确，确认上游服务监听的接口与之一致；若使用 Docker 或 Kubernetes，需确认网络互通和 DNS 解析。\n4. 调整超时参数（proxy_connect_timeout, proxy_read_timeout, proxy_send_timeout）观察是否仅为慢请求导致；同时检查上游是否返回了非标准响应（可抓包或启用 Nginx debug 日志）。\n5. 若以上步骤未定位，检查安全组、防火墙规则，以及系统连接数限制（如文件描述符不足、内核参数 somaxconn 过小）。\n\n### 风险提示\n- 修改 Nginx 配置或重启服务可能短暂影响线上流量，建议先在预发布环境验证。\n- 调整超时和缓冲区可能掩盖真实性能问题，应同步优化上游服务响应速度。\n- 抓包或启用 debug 日志会增加磁盘 I/O 和 CPU 消耗，非必要时不长期开启。",
+      "elapsed": 14.56,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_b__ops_qa_02",
+      "success": true,
+      "content": "### 问题判断\n磁盘空间使用率达到100%导致的故障排查需求。\n\n### 可能原因\n- 日志文件、临时文件未清理，持续增长\n- 已删除但被进程占用的文件未释放空间（lsof）\n- 应用生成的大文件（数据库备份、上传文件等）积累\n- 文件系统inode耗尽（虽有空闲容量但无法创建新文件）\n- 系统快照、容器镜像、缓存等占用大量空间\n\n### 建议排查步骤\n1. 使用 `df -h` 查看各挂载点使用率，确认哪一个分区已满；同时用 `df -i` 检查inode使用率，排除inode耗尽。\n2. 进入对应分区根目录，执行 `du -sh /* 2>/dev/null | sort -rh | head -20` 定位占用空间最大的目录或文件，逐层深入找到具体大文件。\n3. 检查是否有进程仍在写入已删除的文件：`lsof | grep deleted | awk '{print $1,$2,$7}' | sort -u`，若发现占用，排查对应进程是否可以安全重启以释放空间。\n4. 根据应用特性，检查常见大文件路径，如 `/var/log`、`/tmp`、`/var/lib/docker`、数据库数据目录等，评估是否可压缩、转储或清理。\n\n### 风险提示\n- 删除文件前务必确认文件用途，避免误删系统或业务关键数据。\n- 对于被进程占用的已删除文件，需重启相关服务才能释放空间，操作前请评估业务影响。\n- 若因inode耗尽导致，需清理大量小文件（如邮件队列、会话文件），建议分批操作并监控。",
+      "elapsed": 13.11,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_b__ops_qa_03",
+      "success": true,
+      "content": "### 问题判断\nJava 应用在 OrderService.getOrder() 方法第 142 行发生了空指针异常（NullPointerException）。\n\n### 可能原因\n- 试图调用某个对象的方法或属性时，该对象实际为 null（未初始化、被意外置空或查询结果为空）。\n- 方法中使用的返回值（如数据库查询、远程调用、缓存结果）没有做空值判断直接使用。\n- 容器依赖注入失败导致某个成员变量为 null，但在方法中被当作已注入使用。\n\n### 建议排查步骤\n1. 查看 OrderService 类中 getOrder() 方法第 142 行的具体代码，找出是哪个对象可能为 null，并分析该对象的来源（方法参数、成员变量、局部变量或方法调用返回值）。\n2. 追溯该对象的赋值路径，检查是否可能存在未初始化的情况，例如：依赖注入是否正确、是否在条件分支中没有被赋值、是否存在并发修改导致被置空。\n3. 增加防御性编程，在调用前对可能为 null 的对象进行显式判空，并记录更详细的上下文日志（如传入的订单 ID、用户信息），便于复现和定位。\n\n### 风险提示\n若该空指针发生在生产环境，可能中断业务流程并影响用户体验，建议尽快定位并修复。修复时注意不要仅捕获异常掩盖问题，应从根源解决空值来源或增加空值处理。",
+      "elapsed": 9.94,
+      "error": null
+    },
+    {
+      "case_id": "ops_qa_b__ops_qa_04",
+      "success": true,
+      "content": "### 问题判断\n服务器性能骤降类故障，需排查系统资源与进程异常。\n\n### 可能原因\n- 某个进程占用大量CPU或内存，导致系统响应缓慢。\n- 磁盘I/O负载过高或存储空间耗尽，影响读写性能。\n- 网络流量异常或存在SYN攻击等外部因素。\n\n### 建议排查步骤\n1. 检查系统全局负载和排队任务：执行 `uptime` 查看1/5/15分钟负载，执行 `top` 或 `htop` 观察CPU使用率、内存使用情况，以及占用资源最高的进程。\n2. 检查磁盘I/O和空间：执行 `df -h` 查看各分区使用率，确认是否接近100%；执行 `iostat -x 1`（需sysstat包）观察磁盘利用率、等待队列；使用 `iotop` 定位高I/O进程。\n3. 检查网络状况：执行 `ss -tulpn` 或 `netstat -anp` 查看异常连接数量，用 `iftop` 或 `nload` 观察实时流量，必要时抓包分析（如 `tcpdump`）确认有无异常流量。\n\n如果以上步骤未发现问题，可进一步检查系统日志 `/var/log/messages`、内核日志 `dmesg -T` 中是否有硬件错误或OOM killer记录，并确认是否最近有批量任务或定时任务触发。\n\n### 风险提示\n- 执行 `top` 或 `iostat` 等监控命令本身对系统影响极小，可直接使用。\n- 在排查高负载时避免执行 `kill -9` 异常进程前未确认其作用，防止误杀关键服务。\n- 若磁盘已满，删除文件需谨慎，避免删除正在写入的日志或数据文件引发应用异常。",
+      "elapsed": 11.31,
+      "error": null
+    }
+  ]
+}

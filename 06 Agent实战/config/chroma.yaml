@@ -1,0 +1,19 @@
+md5_hex_store: data/md5_text.txt
+
+# chroma存储路径
+collection_name: Agent_Test
+collection_path: data/chroma/
+
+data: data
+
+# splitter文本分割器
+chunk_size: 800
+chunk_overlap: 100
+separators: ["\n\n","\n","。","?","！"," ",""]
+top_k: 3
+max_distance: 0.8
+
+allow_knowledge_file_type: ["txt","md","pdf"]
+storage_path: data/chat_history
+
+session_config: {"configurable": {"session_id": "user_001"}}
