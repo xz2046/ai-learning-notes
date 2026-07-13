@@ -1,0 +1,7 @@
+name: New MCP server
+version: 0.0.1
+schema: v1
+mcpServers: 
+    demo-server: 
+      command: "python"
+      args": ["c:/Users/admin/Desktop/学习/07 LangGraph学习/10 mcp服务实现.py"]

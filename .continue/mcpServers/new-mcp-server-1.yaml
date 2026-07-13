@@ -1,0 +1,10 @@
+name: New MCP server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: my-coffee
+    type: streamablehttp
+    url: "https://gwmcp.lkcoffee.com/order/user/mcp"
+    headers:
+      Authorization: "Bearer 0eb79e3edbd947e3b90436218b31f7468mcpLUCKIN_MCP_AI"
+    timeout: 120

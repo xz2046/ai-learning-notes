@@ -1,0 +1,18 @@
+# 节点监控工具配置
+monitor_base_url: "http://tw15a0050.onething.net:17812"
+
+# 监控平台Cookie认证
+# 从监控平台登录后获取，过期需更新
+monitor_cookie: "token_plugin_web_monitor=sso_job76my06foteflk6590thsqpi96; _tea_utm_cache_10000007=undefined"
+
+# Grafana看板配置
+grafana_base_url: "https://monitor.onething.net"
+grafana_cookie: "cna=9iKoItcDuEwCAduRL7aUsEqd; _tea_utm_cache_10000007=undefined; grafana_session=1a546d3d512ad322b3537d5fc7b30287; grafana_session_expiry=1782900372"
+
+# Grafana Prometheus数据源UID
+prometheus_datasource_uid: "000000003"
+prometheus_datasource_type: "prometheus"
+
+# 隧道命令执行接口
+tunnel_cmd_url: "https://tunnel-cluster.xycloud.com/api/tunnel/cmd/sync"
+tunnel_cmd_cookie: "Hm_lvt_a82fbe6b647c12f654153b50bdf91d5e=1780557415; SESSIONID=69faa3d2-9bb5-441d-946c-34909554b85e; _tea_utm_cache_10000007=undefined"
