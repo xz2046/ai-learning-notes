@@ -1,6 +1,6 @@
 from langchain_community.embeddings import DashScopeEmbeddings
 import os
-os.environ["DashScope_API_KEY"] = "sk-ws-H.REEMDDX.gz8h.MEYCIQDEn3YfV6lcTrACY1MO4yZfXXpbXsMs2o1MIgCLrUFBlQIhAN0hgNeJYXkQSKkR5ReVn5rTsy0-_9b5WVirmUYY5wUc"
+os.environ["DashScope_API_KEY"] = "sk-*****************************"
 # 初始化阿里嵌入模型（v4 最新）
 embeddings = DashScopeEmbeddings(
     model="text-embedding-v4"
